@@ -204,9 +204,9 @@ export function template(): string {
       <div class="panel-actions">
         <button class="btn primary" id="generate-btn" disabled>${t('generate_btn')}</button>
         <button class="btn" id="download-btn" disabled>${t('download_btn')}</button>
-      </div>
-      <div class="status" id="status">
-        <span class="status-msg" id="status-msg"></span>
+        <div class="status" id="status">
+          <span class="status-msg" id="status-msg"></span>
+        </div>
       </div>
     </aside>
   </div>

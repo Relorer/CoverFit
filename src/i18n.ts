@@ -87,7 +87,7 @@ const ru: Record<string, string> = {
   comfy_searching: 'Ищу ComfyUI…',
   comfy_not_found: 'ComfyUI не найден',
   comfy_online: 'ComfyUI · {addr}',
-  comfy_online_unverified: 'ComfyUI? · {addr}',
+  comfy_online_unverified: 'ComfyUI · {addr}',
   comfy_title_online: 'Подключено: {addr}. {info}',
   comfy_title_unverified:
     "{addr} отвечает, но подтвердить, что это именно ComfyUI, не удалось (CORS). Запустите сервер с флагом '--enable-cors-header *' — тогда статус будет точным.",
@@ -213,7 +213,7 @@ const en: Record<string, string> = {
   comfy_searching: 'Looking for ComfyUI…',
   comfy_not_found: 'ComfyUI not found',
   comfy_online: 'ComfyUI · {addr}',
-  comfy_online_unverified: 'ComfyUI? · {addr}',
+  comfy_online_unverified: 'ComfyUI · {addr}',
   comfy_title_online: 'Connected: {addr}. {info}',
   comfy_title_unverified:
     "{addr} answered, but it could not be confirmed as ComfyUI (CORS). Start the server with '--enable-cors-header *' for an exact status.",
