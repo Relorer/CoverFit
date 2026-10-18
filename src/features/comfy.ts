@@ -58,9 +58,13 @@ function errorText(error: unknown) {
 }
 
 export function renderFluxSettings(): void {
-  const connected = comfyState() === 'online' || comfyState() === 'unverified';
-  refs!.fluxGroup.hidden = !connected;
-  if (!connected) return;
+  // Блок с моделями показываем только при подтверждённом подключении к ComfyUI.
+  // Если подключиться не удалось (offline или unverified), блок не отображается.
+  const verified = comfyState() === 'online';
+  refs!.fluxGroup.hidden = !verified;
+  // Кнопка скачивания моделей показывается только когда ComfyUI найден и подтверждён.
+  refs!.fluxDownloadBtn.hidden = true;
+  if (!verified) return;
 
   const scan = fluxScan;
   let statusKey = 'comfy_flux_checking';
@@ -89,7 +93,9 @@ export function renderFluxSettings(): void {
   const size = fluxAutoMissing(files).reduce((sum, f) => sum + f.sizeGb, 0).toFixed(1);
 
   refs!.fluxDownloadBtn.hidden =
-    fluxDownloading || fluxAutoMissing(files).length === 0 || !(scan?.managerOk ?? true);
+    fluxDownloading ||
+    fluxAutoMissing(files).length === 0 ||
+    !scan?.managerOk;
   refs!.fluxDownloadBtn.textContent = t('comfy_flux_dl', { size });
   refs!.fluxRecheckBtn.textContent = t('comfy_flux_recheck');
   refs!.fluxProgress.hidden = !fluxDownloading;
@@ -299,7 +305,7 @@ function updateComfyPopTexts(): void {
 }
 
 async function startFluxDownload(): Promise<void> {
-  if (!state.comfyInstance || fluxDownloading) return;
+  if (!state.comfyInstance?.verified || fluxDownloading) return;
   fluxDownloading = true;
   renderFluxSettings();
   try {
