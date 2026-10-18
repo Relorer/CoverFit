@@ -174,12 +174,16 @@ body {
   height: 0;
   max-height: 100%;
   max-width: 100%;
-  touch-action: none;
+  touch-action: pan-y;
   cursor: pointer;
 }
 
 .ba:has(.ba-handle:not([hidden])) {
   cursor: default;
+}
+
+.ba.view-both:has(.ba-handle:not([hidden])) {
+  touch-action: none;
 }
 
 .ba-img {
@@ -1064,6 +1068,8 @@ body.modal-open {
 @media (max-width: 820px) {
   .workspace {
     flex-direction: column;
+    overflow-y: auto;
+    overscroll-behavior: contain;
   }
 
   .stage {
@@ -1084,13 +1090,13 @@ body.modal-open {
   }
 
   .panel {
-    flex: 0 1 auto;
+    flex: 1 0 auto;
     width: auto;
+    overflow-y: visible;
     border-left: 0;
     border-top: 1px solid var(--border);
     padding: 14px 14px 0;
     gap: 12px;
-    overscroll-behavior: contain;
   }
 
   .panel-section {
@@ -1098,7 +1104,6 @@ body.modal-open {
   }
 
   .panel-actions {
-    margin-top: 0;
     margin-left: -14px;
     margin-right: -14px;
     padding: 10px 14px 12px;
