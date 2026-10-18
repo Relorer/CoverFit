@@ -184,7 +184,6 @@ export function openSettings(opener: HTMLElement): void {
   refs!.settingsBtn.setAttribute('aria-expanded', 'true');
   document.body.classList.add('modal-open');
   syncComfyUrlField();
-  void runComfyScan();
   void runFluxRescan(true);
   refs!.settingsPop.focus();
 }
