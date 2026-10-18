@@ -109,12 +109,12 @@ export function template(): string {
             <canvas class="ba-img before" id="img-before" role="img" aria-label="${t('before')}"></canvas>
             <canvas class="ba-img after" id="img-after" role="img" aria-label="${t('after')}" hidden></canvas>
             <div class="ba-handle" id="ba-handle" hidden><span></span></div>
-            <button class="add-book" id="add-book-btn" type="button" title="${t('new_book')}" aria-label="${t('new_book')}">
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                <path d="M8 3.2v9.6M3.2 8h9.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-              </svg>
-            </button>
           </div>
+          <button class="add-book" id="add-book-btn" type="button" title="${t('new_book')}" aria-label="${t('new_book')}">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M8 3.2v9.6M3.2 8h9.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </button>
         </div>
         <div class="viewer-caption">
           <div class="viewer-tools visually-hidden" id="view-tools">
