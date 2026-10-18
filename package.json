@@ -1,0 +1,28 @@
+{
+  "name": "coverfit",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Outpaint EPUB covers to a target aspect ratio, fully in the browser.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "dependencies": {
+    "jszip": "^3.10.1",
+    "onnxruntime-web": "^1.30.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^8.71.2",
+    "@typescript-eslint/parser": "^8.71.2",
+    "eslint": "^10.13.0",
+    "globals": "^17.13.0",
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.71.2",
+    "vite": "^5.4.11"
+  }
+}
