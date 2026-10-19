@@ -2,10 +2,10 @@ import './style.css';
 import { applyPrefsToState, state, savePrefs, type ViewMode } from './state';
 import { getLang, setLang, t, type Lang } from './i18n';
 import { initDom, app, refs } from './ui/dom';
+import { loupeInit } from './ui/loupe';
 import { initDropdowns, renderDropdowns, renderDeviceDropdown, renderModelDropdown, updateDropdownAria } from './ui/dropdown';
 import {
   fitViewer,
-  moveSlider,
   setStatus,
   setViewMode,
   updateModelHint,
@@ -14,6 +14,7 @@ import {
   updateViewUi,
   updateColorUi,
 } from './ui/panels';
+import { initSlider } from './ui/slider';
 import { openFile } from './features/file';
 import { recompute, scheduleRender } from './features/preview';
 import { generate } from './features/generate';
@@ -103,6 +104,8 @@ function applyLanguage(): void {
   document.querySelector('.dropzone-sub')!.textContent = t('dropzone_sub');
   refs!.beforeCanvas.setAttribute('aria-label', t('before'));
   refs!.afterCanvas.setAttribute('aria-label', t('after'));
+  refs!.loupeCanvas.setAttribute('aria-label', t('loupe_label'));
+  refs!.slider.setAttribute('aria-label', `${t('before')} / ${t('after')}`);
   updateDropdownAria();
   refs!.positionReset.title = t('reset_center');
   refs!.positionReset.setAttribute('aria-label', t('reset_center'));
@@ -246,24 +249,14 @@ function init(): void {
     refs!.fileInput.click();
   });
 
-  refs!.slider.addEventListener('pointerdown', (e) => {
-    if (refs!.afterCanvas.hidden || state.viewMode !== 'both') return;
-    refs!.slider.setPointerCapture(e.pointerId);
-    moveSlider(e);
-    const onMove = (ev: PointerEvent) => moveSlider(ev);
-    const onUp = () => {
-      refs!.slider.removeEventListener('pointermove', onMove);
-      refs!.slider.removeEventListener('pointerup', onUp);
-    };
-    refs!.slider.addEventListener('pointermove', onMove);
-    refs!.slider.addEventListener('pointerup', onUp);
-  });
+  initSlider();
 
   const resizeObserver = new ResizeObserver(() => fitViewer());
   resizeObserver.observe(refs!.viewerFrame);
   setStatus('—');
   initComfyStatus();
 
+  loupeInit();
   initDropdowns(onLangSelect, selectDevice, selectModel);
   applyLanguage();
   updateViewUi();

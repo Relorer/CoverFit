@@ -124,6 +124,7 @@ const ru: Record<string, string> = {
   comfy_flux_generating: 'Генерация через FLUX.1 Fill (dev)…',
   comfy_flux_blending: 'Совмещаю окна…',
   comfy_flux_too_small: 'Целевое разрешение слишком маленькое для генерации окнами.',
+  loupe_label: 'Стеклянная лупа: зажмите среднюю кнопку мыши, чтобы увеличить область под курсором.',
 };
 
 const en: Record<string, string> = {
@@ -250,6 +251,7 @@ const en: Record<string, string> = {
   comfy_flux_generating: 'Generating with FLUX.1 Fill (dev) …',
   comfy_flux_blending: 'Blending windows…',
   comfy_flux_too_small: 'The target resolution is too small for windowed generation.',
+  loupe_label: 'Glass loupe: hold the middle mouse button to magnify the area under the cursor.',
 };
 
 const dicts: Record<Lang, Record<string, string>> = { ru, en };

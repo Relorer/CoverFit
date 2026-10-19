@@ -16,10 +16,10 @@ import {
   applyViewMode,
   fitViewer,
   setStatus,
-  setSlider,
   updateCaption,
   updateSectionsUi,
 } from '../ui/panels';
+import { setComparePos } from '../ui/slider';
 
 let renderFrame = 0;
 let renderFull = false;
@@ -63,7 +63,7 @@ export function resetBook(): void {
   refs!.afterCanvas.height = 0;
   refs!.afterCanvas.hidden = true;
   refs!.handle.hidden = true;
-  refs!.slider.style.removeProperty('--pos');
+  setComparePos(0.5);
 
   refs!.viewer.hidden = true;
   refs!.dropzone.hidden = false;
@@ -131,7 +131,7 @@ export function recompute(): void {
     });
   }
 
-  if (layout.axis !== 'none') setSlider(0.5);
+  if (layout.axis !== 'none') setComparePos(0.5);
 
   updateSectionsUi();
   updateCaption();

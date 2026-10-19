@@ -2,6 +2,7 @@ import { t } from '../i18n';
 import { state } from '../state';
 import { refs } from './dom';
 import { savePrefs } from '../state';
+import { renderCompare, setComparePos } from './slider';
 import { presentCanvas } from '../lib/image';
 import { getModel } from '../lib/models';
 
@@ -9,17 +10,6 @@ export type ViewMode = import('../state').ViewMode;
 
 export function updateRangeFill(input: HTMLInputElement): void {
   input.style.setProperty('--val', `${input.value}%`);
-}
-
-export function setSlider(pos: number): void {
-  const clamped = Math.min(1, Math.max(0, pos));
-  refs!.slider.style.setProperty('--pos', `${clamped * 100}%`);
-}
-
-export function moveSlider(event: PointerEvent): void {
-  const rect = refs!.slider.getBoundingClientRect();
-  if (rect.width === 0) return;
-  setSlider((event.clientX - rect.left) / rect.width);
 }
 
 export function fitViewer(): void {
@@ -30,6 +20,7 @@ export function fitViewer(): void {
   const scale = Math.min(frameW / state.layout.width, frameH / state.layout.height);
   refs!.slider.style.width = `${Math.floor(state.layout.width * scale)}px`;
   refs!.slider.style.height = `${Math.floor(state.layout.height * scale)}px`;
+  renderCompare();
 }
 
 export function updateCaption(): void {
@@ -116,8 +107,10 @@ export function updateColorUi(): void {
 export function applyViewMode(): void {
   const hasResult = !refs!.afterCanvas.hidden;
   refs!.viewTools.classList.toggle('visually-hidden', !hasResult);
+  refs!.slider.tabIndex = hasResult ? 0 : -1;
   const eff: ViewMode = state.viewMode === 'after' && !hasResult ? 'before' : state.viewMode;
   refs!.slider.className = `ba view-${eff}`;
+  renderCompare();
 }
 
 export function updateViewUi(): void {
@@ -140,7 +133,7 @@ export function showResult(canvas: HTMLCanvasElement, message = t('done_msg')): 
   presentCanvas(refs!.afterCanvas, canvas);
   refs!.afterCanvas.hidden = false;
   refs!.handle.hidden = false;
-  setSlider(0.5);
+  setComparePos(0.5);
   applyViewMode();
   refs!.downloadBtn.disabled = false;
   setStatus(message);

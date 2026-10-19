@@ -29,6 +29,7 @@ import {
 import {
   setStatus,
 } from '../ui/panels';
+import { loupeHide } from '../ui/loupe';
 
 const COMFY_RESCAN_MS = 30_000;
 const COMFY_MIN_RESCAN_MS = 10_000;
@@ -189,6 +190,7 @@ export function openSettings(opener: HTMLElement): void {
   refs!.settingsPop.hidden = false;
   refs!.settingsBtn.setAttribute('aria-expanded', 'true');
   document.body.classList.add('modal-open');
+  loupeHide();
   syncComfyUrlField();
   void runFluxRescan(true);
   refs!.settingsPop.focus();

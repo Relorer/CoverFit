@@ -176,6 +176,7 @@ body {
   max-width: 100%;
   touch-action: pan-y;
   cursor: pointer;
+  outline: none;
 }
 
 .ba:has(.ba-handle:not([hidden])) {
@@ -184,6 +185,11 @@ body {
 
 .ba.view-both:has(.ba-handle:not([hidden])) {
   touch-action: none;
+  cursor: ew-resize;
+}
+
+.ba:focus-visible {
+  box-shadow: 0 0 0 2px var(--accent);
 }
 
 .ba-img {
@@ -196,52 +202,78 @@ body {
   -webkit-user-drag: none;
 }
 
-.ba-img.after {
-  clip-path: inset(0 calc(100% - var(--pos, 50%)) 0 0);
+.ba-handle {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
 }
 
-.ba-handle {
+.ba-line {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.5)) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.35));
+}
+
+.ba-line path {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2px;
+}
+
+.ba-grip {
   position: absolute;
   top: 0;
   bottom: 0;
-  left: var(--pos, 50%);
-  width: 2px;
-  margin-left: -1px;
-  background: var(--accent);
-  cursor: ew-resize;
+  width: 0;
 }
 
-.ba-handle span {
+.ba-knob {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 30px;
-  height: 30px;
-  transform: translate(-50%, -50%);
+  translate: -50% -50%;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
   border-radius: 50%;
   background: var(--surface);
-  border: 1.5px solid var(--accent);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  color: var(--text);
+  box-shadow: 0 2px 12px rgba(20, 20, 40, 0.25);
+  transition: scale 0.22s cubic-bezier(0.24, 1.34, 0.38, 1);
 }
 
-.ba-handle span::before,
-.ba-handle span::after {
-  content: '';
+.ba:hover .ba-knob {
+  scale: 1.08;
+}
+
+.ba[data-held] .ba-knob {
+  scale: 0.9;
+}
+
+.ba-tag {
   position: absolute;
-  top: 50%;
-  width: 2px;
-  height: 8px;
-  margin-top: -4px;
-  background: var(--accent);
-  border-radius: 1px;
+  top: 12px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(23, 24, 26, 0.45);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0;
 }
 
-.ba-handle span::before {
-  left: 9px;
+.ba-tag-after {
+  right: 12px;
 }
 
-.ba-handle span::after {
-  right: 9px;
+.ba-tag-before {
+  left: 12px;
 }
 
 .viewer-tools {
@@ -267,10 +299,6 @@ body {
 .ba.view-after .ba-img.before,
 .ba.view-after .ba-handle {
   display: none;
-}
-
-.ba.view-after .ba-img.after {
-  clip-path: none;
 }
 
 .viewer-caption {
@@ -1192,23 +1220,9 @@ body.modal-open {
     padding: 0 14px;
   }
 
-  .ba-handle span {
-    width: 42px;
-    height: 42px;
-  }
-
-  .ba-handle span::before,
-  .ba-handle span::after {
-    height: 10px;
-    margin-top: -5px;
-  }
-
-  .ba-handle span::before {
-    left: 10px;
-  }
-
-  .ba-handle span::after {
-    right: 10px;
+  .ba-knob {
+    width: 44px;
+    height: 44px;
   }
 
   .dropzone-title {
@@ -1218,4 +1232,16 @@ body.modal-open {
   .dropzone-sub {
     font-size: 14px;
   }
+}
+
+/* Glass loupe: hold the middle mouse button to magnify the page under the cursor. */
+.lqg {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  pointer-events: none;
+}
+
+.lqg-canvas {
+  display: block;
 }

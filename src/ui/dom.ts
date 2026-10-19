@@ -4,7 +4,7 @@ const CARET_SVG = `<svg class="dropdown-caret" width="12" height="12" viewBox="0
 
 export const app = document.querySelector<HTMLDivElement>('#app')!;
 
-export const el = <T extends HTMLElement>(id: string): T => document.getElementById(id) as T;
+export const el = <T extends Element>(id: string): T => document.getElementById(id) as unknown as T;
 
 interface Refs {
   viewerFrame: HTMLDivElement;
@@ -15,6 +15,10 @@ interface Refs {
   afterCanvas: HTMLCanvasElement;
   slider: HTMLDivElement;
   handle: HTMLDivElement;
+  linePath: SVGPathElement;
+  grip: HTMLSpanElement;
+  tagBefore: HTMLSpanElement;
+  tagAfter: HTMLSpanElement;
   viewTools: HTMLDivElement;
   viewSeg: HTMLDivElement;
   caption: HTMLDivElement;
@@ -46,6 +50,8 @@ interface Refs {
   generateBtn: HTMLButtonElement;
   downloadBtn: HTMLButtonElement;
   addBookBtn: HTMLButtonElement;
+  loupe: HTMLDivElement;
+  loupeCanvas: HTMLCanvasElement;
   statusEl: HTMLDivElement;
   statusMsgEl: HTMLSpanElement;
   comfyChip: HTMLDivElement;
@@ -105,10 +111,19 @@ export function template(): string {
       </div>
       <div class="viewer" id="viewer" hidden>
         <div class="viewer-frame" id="viewer-frame">
-          <div class="ba" id="ba">
+          <div class="ba" id="ba" role="slider" aria-label="${t('before')} / ${t('after')}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
             <canvas class="ba-img before" id="img-before" role="img" aria-label="${t('before')}"></canvas>
             <canvas class="ba-img after" id="img-after" role="img" aria-label="${t('after')}" hidden></canvas>
-            <div class="ba-handle" id="ba-handle" hidden><span></span></div>
+            <div class="ba-handle" id="ba-handle" hidden>
+              <span class="ba-tag ba-tag-after" id="ba-tag-after" data-i18n="after">${t('after')}</span>
+              <span class="ba-tag ba-tag-before" id="ba-tag-before" data-i18n="before">${t('before')}</span>
+              <svg class="ba-line" aria-hidden="true"><path id="ba-line-path" d=""/></svg>
+              <span class="ba-grip" id="ba-grip"><span class="ba-knob">
+                <svg width="16" height="10" viewBox="0 0 16 10" fill="none" aria-hidden="true">
+                  <path d="M5 1 1 5l4 4M11 1l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span></span>
+            </div>
           </div>
           <button class="add-book" id="add-book-btn" type="button" title="${t('new_book')}" aria-label="${t('new_book')}">
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -126,6 +141,9 @@ export function template(): string {
           </div>
           <span class="cap-text" id="viewer-caption"></span>
         </div>
+      </div>
+      <div id="loupe" class="lqg" hidden>
+        <canvas id="loupe-canvas" class="lqg-canvas" role="img" aria-label="${t('loupe_label')}"></canvas>
       </div>
     </section>
     <aside class="panel">
@@ -277,6 +295,10 @@ export function initDom(): void {
     afterCanvas: el('img-after'),
     slider: el('ba'),
     handle: el('ba-handle'),
+    linePath: el('ba-line-path'),
+    grip: el('ba-grip'),
+    tagBefore: el<HTMLSpanElement>('ba-tag-before'),
+    tagAfter: el<HTMLSpanElement>('ba-tag-after'),
     viewTools: el('view-tools'),
     viewSeg: el('view-seg'),
     caption: el('viewer-caption'),
@@ -308,6 +330,8 @@ export function initDom(): void {
     generateBtn: el('generate-btn'),
     downloadBtn: el('download-btn'),
     addBookBtn: el('add-book-btn'),
+    loupe: el('loupe'),
+    loupeCanvas: el('loupe-canvas'),
     statusEl: el('status'),
     statusMsgEl: el('status-msg'),
     comfyChip: el('comfy-chip'),
